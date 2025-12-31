@@ -1,0 +1,7 @@
+{
+  "name": "OrbitAudio AI",
+  "description": "A professional-grade hybrid AI Digital Audio Workstation (DAW) and wellness audio engine. Features multi-track editing, AI-assisted generation, and brainwave entrainment tools.",
+  "requestFramePermissions": [
+    "microphone"
+  ]
+}

@@ -1,0 +1,411 @@
+/* ORBITAUDIO FOCUS - GLOBAL STYLES */
+
+/* Import Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Barlow:wght@300;400;600&family=Oswald:wght@500;700&family=JetBrains+Mono:wght@400;500&display=swap');
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* CSS CUSTOM PROPERTIES */
+:root {
+  /* Deep Space - Backgrounds */
+  --color-space-950: #050608;
+  --color-space-900: #0a0b0f;
+  --color-space-800: #12141a;
+  --color-space-700: #1a1d26;
+  --color-space-600: #242833;
+  --color-space-500: #2e3341;
+
+  /* Nebula Purple - Primary */
+  --color-nebula-600: #7c3aed;
+  --color-nebula-500: #8b5cf6;
+  --color-nebula-400: #a78bfa;
+  --color-nebula-300: #c4b5fd;
+  --color-nebula-glow: rgba(139, 92, 246, 0.25);
+
+  /* Aurora Teal - Secondary */
+  --color-aurora-600: #0d9488;
+  --color-aurora-500: #14b8a6;
+  --color-aurora-400: #2dd4bf;
+  --color-aurora-300: #5eead4;
+  --color-aurora-glow: rgba(20, 184, 166, 0.25);
+
+  /* Cosmic Amber - Tertiary */
+  --color-amber-500: #f59e0b;
+  --color-amber-400: #fbbf24;
+  --color-amber-glow: rgba(245, 158, 11, 0.25);
+
+  /* Text Colors */
+  --color-text-primary: #f8fafc;
+  --color-text-secondary: #94a3b8;
+  --color-text-tertiary: #64748b;
+  --color-text-inverse: #0a0b0f;
+
+  /* Semantic Colors */
+  --color-success: #22c55e;
+  --color-warning: #eab308;
+  --color-error: #ef4444;
+  --color-info: #3b82f6;
+
+  /* Brainwave State Colors */
+  --color-delta: #6366f1;
+  --color-theta: #8b5cf6;
+  --color-alpha: #14b8a6;
+  --color-beta: #f59e0b;
+  --color-gamma: #ef4444;
+
+  /* Noise Type Colors */
+  --color-white-noise: #e2e8f0;
+  --color-pink-noise: #f9a8d4;
+  --color-brown-noise: #a16207;
+
+  /* Gradients */
+  --gradient-nebula: linear-gradient(135deg, #7c3aed 0%, #8b5cf6 50%, #a78bfa 100%);
+  --gradient-aurora: linear-gradient(135deg, #0d9488 0%, #14b8a6 50%, #2dd4bf 100%);
+  --gradient-cosmic: linear-gradient(135deg, #0a0b0f 0%, #1a1d26 50%, #242833 100%);
+  --gradient-primary: linear-gradient(135deg, #8b5cf6 0%, #14b8a6 100%);
+  --gradient-radial-glow: radial-gradient(circle at center, var(--color-nebula-glow) 0%, transparent 70%);
+
+  /* Shadows */
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.5);
+  --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.5);
+  --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.5);
+  --shadow-glow-purple: 0 0 20px var(--color-nebula-glow);
+  --shadow-glow-teal: 0 0 20px var(--color-aurora-glow);
+  /* Timing */
+  --duration-fast: 150ms;
+  --duration-normal: 300ms;
+  --duration-slow: 500ms;
+  --ease-out: cubic-bezier(0, 0, 0.2, 1);
+  --ease-in: cubic-bezier(0.4, 0, 1, 1);
+  --ease-in-out: cubic-bezier(0.4, 0, 0.2, 1);
+  --ease-bounce: cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+/* BASE STYLES */
+* {
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  font-family: 'Barlow', system-ui, sans-serif;
+  font-weight: 300;
+  background-color: var(--color-space-900);
+  color: var(--color-text-primary);
+  line-height: 1.5;
+}
+
+/* TYPOGRAPHY UTILITIES */
+.font-display {
+  font-family: 'Oswald', system-ui, sans-serif;
+}
+
+.font-mono {
+  font-family: 'JetBrains Mono', 'Fira Code', monospace;
+}
+
+/* GLASS MORPHISM */
+.glass {
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+.glass-subtle {
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+
+/* GLOW EFFECTS */
+.glow-nebula {
+  box-shadow: 0 0 20px var(--color-nebula-glow);
+}
+
+.glow-aurora {
+  box-shadow: 0 0 20px var(--color-aurora-glow);
+}
+
+.glow-amber {
+  box-shadow: 0 0 20px var(--color-amber-glow);
+}
+
+/* Text glow */
+.text-glow-nebula {
+  text-shadow: 0 0 10px var(--color-nebula-glow);
+}
+
+.text-glow-aurora {
+  text-shadow: 0 0 10px var(--color-aurora-glow);
+}
+
+/* CUSTOM SCROLLBAR */
+.custom-scrollbar {
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-space-600) transparent;
+}
+
+.custom-scrollbar::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background-color: var(--color-space-600);
+  border-radius: 3px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background-color: var(--color-space-500);
+}
+
+/* Hide scrollbar but keep functionality */
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+/* SLIDER STYLES */
+input[type="range"] {
+  -webkit-appearance: none;
+  appearance: none;
+  background: transparent;
+  cursor: pointer;
+}
+
+input[type="range"]::-webkit-slider-runnable-track {
+  height: 4px;
+  background: var(--color-space-700);
+  border-radius: 2px;
+}
+
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 16px;
+  height: 16px;
+  background: var(--color-nebula-500);
+  border-radius: 50%;
+  margin-top: -6px;
+  box-shadow: 0 0 10px var(--color-nebula-glow);
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+input[type="range"]::-webkit-slider-thumb:hover {
+  transform: scale(1.1);
+  box-shadow: 0 0 15px var(--color-nebula-glow);
+}
+
+input[type="range"]::-moz-range-track {
+  height: 4px;
+  background: var(--color-space-700);
+  border-radius: 2px;
+}
+
+input[type="range"]::-moz-range-thumb {
+  width: 16px;
+  height: 16px;
+  background: var(--color-nebula-500);
+  border: none;
+  border-radius: 50%;
+  box-shadow: 0 0 10px var(--color-nebula-glow);
+}
+
+/* Teal variant */
+input[type="range"].slider-teal::-webkit-slider-thumb {
+  background: var(--color-aurora-500);
+  box-shadow: 0 0 10px var(--color-aurora-glow);
+}
+
+input[type="range"].slider-teal::-moz-range-thumb {
+  background: var(--color-aurora-500);
+  box-shadow: 0 0 10px var(--color-aurora-glow);
+}
+
+/* FOCUS STATES */
+*:focus-visible {
+  outline: 2px solid var(--color-nebula-500);
+  outline-offset: 2px;
+}
+
+button:focus-visible,
+a:focus-visible {
+  outline: 2px solid var(--color-nebula-400);
+  outline-offset: 2px;
+}
+
+/* REDUCED MOTION */
+@media (prefers-reduced-motion: reduce) {
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* ANIMATION UTILITIES */
+@keyframes pulse-ring {
+  0% {
+    transform: scale(0.95);
+    opacity: 0.7;
+  }
+
+  50% {
+    transform: scale(1);
+    opacity: 1;
+  }
+
+  100% {
+    transform: scale(0.95);
+    opacity: 0.7;
+  }
+}
+
+.animate-pulse-ring {
+  animation: pulse-ring 2s ease-in-out infinite;
+}
+
+@keyframes float {
+
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+.animate-float {
+  animation: float 3s ease-in-out infinite;
+}
+
+/* Progress ring animation */
+@keyframes progress-spin {
+  from {
+    stroke-dashoffset: 565;
+  }
+
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+/* TIMER DISPLAY */
+.timer-display {
+  font-family: 'JetBrains Mono', monospace;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.02em;
+}
+
+/* BRAINWAVE STATE INDICATORS */
+.brainwave-delta {
+  --state-color: var(--color-delta);
+}
+
+.brainwave-theta {
+  --state-color: var(--color-theta);
+}
+
+.brainwave-alpha {
+  --state-color: var(--color-alpha);
+}
+
+.brainwave-beta {
+  --state-color: var(--color-beta);
+}
+
+.brainwave-gamma {
+  --state-color: var(--color-gamma);
+}
+
+.brainwave-indicator {
+  color: var(--state-color);
+  border-color: var(--state-color);
+}
+
+.brainwave-indicator.active {
+  background-color: color-mix(in srgb, var(--state-color) 15%, transparent);
+  box-shadow: 0 0 15px color-mix(in srgb, var(--state-color) 30%, transparent);
+}
+
+/* ZEN MODE STYLES */
+.zen-mode {
+  cursor: none;
+}
+
+.zen-mode * {
+  cursor: none;
+}
+
+.zen-mode-content {
+  opacity: 0;
+  transition: opacity 0.5s ease;
+}
+
+.zen-mode:hover .zen-mode-content {
+  opacity: 1;
+}
+
+/* LOADING STATES */
+.skeleton {
+  background: linear-gradient(90deg,
+      var(--color-space-800) 0%,
+      var(--color-space-700) 50%,
+      var(--color-space-800) 100%);
+  background-size: 200% 100%;
+  animation: skeleton-shimmer 1.5s ease-in-out infinite;
+}
+
+@keyframes skeleton-shimmer {
+  0% {
+    background-position: 200% 0;
+  }
+
+  100% {
+    background-position: -200% 0;
+  }
+}
+
+/* UTILITY CLASSES */
+.gradient-text {
+  background: var(--gradient-primary);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.border-gradient {
+  border: 2px solid transparent;
+  background:
+    linear-gradient(var(--color-space-800), var(--color-space-800)) padding-box,
+    var(--gradient-primary) border-box;
+}
+
+/* Prevent text selection on UI elements */
+.select-none {
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+/* Touch-friendly tap targets */
+.tap-target {
+  min-width: 44px;
+  min-height: 44px;
+}
