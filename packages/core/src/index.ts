@@ -1,6 +1,31 @@
 
 export type NoiseType = 'white' | 'pink' | 'brown';
 
+export interface ModeBlueprint {
+    id: string;
+    name: string;
+    description: string;
+    intent: string;
+    constraints: {
+        maxDuration?: number;
+        forbiddenElements?: string[];
+        requiredElements?: string[];
+    };
+    audioParams: {
+        noiseType: NoiseType;
+        noiseVolume: number;
+        toneFrequency: number;
+        toneVolume: number;
+        is8D?: boolean;
+        isLofi?: boolean;
+    };
+    metadata: {
+        author: string;
+        version: string;
+        tags: string[];
+    };
+}
+
 export class AudioEngine {
     private ctx: AudioContext | null = null;
     private masterGain: GainNode | null = null;

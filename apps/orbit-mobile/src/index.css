@@ -1,0 +1,24 @@
+body {
+    margin: 0;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    background-color: black;
+    color: white;
+}
+
+:root {
+    color-scheme: dark;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+.no-scrollbar::-webkit-scrollbar {
+    display: none;
+}
+
+.no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
