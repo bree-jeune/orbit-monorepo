@@ -1,6 +1,6 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
-import { NoiseType } from '@orbit/core';
+import { NoiseType, OrbitItem } from '@orbit/core';
 import { AppView, BrainwaveState, SessionPreset } from '../types';
 import { getAuthService, AuthConfig } from '@orbit/auth';
 
@@ -79,6 +79,11 @@ interface AppState {
   savePreset: (name: string) => boolean;
   deletePreset: (id: string) => void;
   initializeAuth: (config: AuthConfig) => void;
+
+  // High-level context sync
+  activeSpace: string;
+  orbitItems: OrbitItem[];
+  getSuggestedPresetId: () => string;
 }
 
 export const useStore = create<AppState>()(
@@ -145,6 +150,8 @@ export const useStore = create<AppState>()(
       setFadeOutDuration: (fadeOutDuration) => set({ fadeOutDuration }),
 
       userPresets: [],
+      activeSpace: 'home',
+      orbitItems: [],
 
       initializeAuth: (config) => {
         const authService = getAuthService(config);
@@ -155,8 +162,25 @@ export const useStore = create<AppState>()(
             authService.subscribeToState<UserPreset[]>({ collection: 'presets' }, (presets) => {
               set({ userPresets: presets });
             });
+
+            // Subscribe to Orbit Context (Brain sync)
+            authService.subscribeToState<{ items: OrbitItem[], activeSpace: string }>({ collection: 'orbits' }, (data) => {
+              if (data) {
+                const prevSpace = get().activeSpace;
+                const newSpace = data.activeSpace || 'home';
+
+                set({
+                  orbitItems: data.items || [],
+                  activeSpace: newSpace
+                });
+
+                if (prevSpace !== newSpace) {
+                  console.log(`[Focus-Timer] Space Shift: ${prevSpace} -> ${newSpace}`);
+                }
+              }
+            });
           } else {
-            set({ userPresets: [] });
+            set({ userPresets: [], orbitItems: [], activeSpace: 'home' });
           }
         });
       },
@@ -207,6 +231,13 @@ export const useStore = create<AppState>()(
         return true;
       },
       deletePreset: (id) => set({ userPresets: get().userPresets.filter(p => p.id !== id) }),
+
+      getSuggestedPresetId: () => {
+        const space = get().activeSpace;
+        if (space === 'work') return 'deep-work';
+        if (space === 'home') return 'lofi-library';
+        return 'lofi-library'; // Default
+      }
     }),
     {
       name: 'orbitaudio-storage-v4',

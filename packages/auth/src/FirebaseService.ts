@@ -64,9 +64,11 @@ export class OrbitAuthService {
 
         const setupListener = (uid: string) => {
             return onSnapshot(doc(this.db!, options.collection, uid), (snapshot) => {
-                const data = snapshot.data();
-                if (data && data.data) {
-                    callback(data.data as T);
+                const docData = snapshot.data();
+                if (docData) {
+                    // Try to extract 'data' property, or return the whole thing
+                    const result = docData.data !== undefined ? docData.data : docData;
+                    callback(result as T);
                 }
             });
         };

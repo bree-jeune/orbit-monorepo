@@ -1,5 +1,5 @@
 import { create } from 'zustand';
-import { NoiseType } from '@orbit/core';
+import { NoiseType, OrbitItem } from '@orbit/core';
 import { AppMode, Project, Track, Clip, AIGeneration, VisualAsset, PublishedItem, User, AudioPreset, BrainwaveState } from './types';
 import { getAuthService, AuthConfig } from '@orbit/auth';
 
@@ -24,6 +24,10 @@ interface DAWState {
   premiumPacks: AudioPreset[];
   isSyncing: boolean;
 
+  // High-level context sync
+  activeSpace: string;
+  orbitItems: OrbitItem[];
+
   setMode: (mode: AppMode) => void;
   toggleTheme: () => void;
   togglePlayback: () => void;
@@ -39,6 +43,7 @@ interface DAWState {
   addVisualAsset: (asset: VisualAsset) => void;
   addPublishedItem: (item: PublishedItem) => void;
   setFocusTime: (time: number) => void;
+  getSuggestedPrompt: () => string;
 
   // Auth & Preset Actions
   setUser: (user: User | null) => void;
@@ -48,6 +53,12 @@ interface DAWState {
   upgradeToPro: () => void;
   initializeAuth: (config: AuthConfig) => void;
 }
+
+const SPACE_SONIC_MAP: Record<string, string> = {
+  'work': 'Deep focus audio with brown noise and atmospheric pads, optimized for coding at 120bpm',
+  'home': 'Relaxing chillhop beat with dusty vinyl crackle and ethereal synth textures',
+  'unknown': 'Neutral ambient soundscape with white noise and gentle frequency sweeps'
+};
 
 export const useStore = create<DAWState>((set, get) => ({
   mode: AppMode.STUDIO,
@@ -79,6 +90,8 @@ export const useStore = create<DAWState>((set, get) => ({
     { id: 'p3', name: 'Lucid Dream Engine', noiseType: 'white', brainwaveState: BrainwaveState.GAMMA, carrierFreq: 528, timerMinutes: 120, isPremium: true, packName: 'Dreamscape', createdAt: '' }
   ],
   isSyncing: false,
+  activeSpace: 'home',
+  orbitItems: [],
 
   setMode: (mode) => set({ mode }),
   toggleTheme: () => set((state) => ({ theme: state.theme === 'dark' ? 'light' : 'dark' })),
@@ -128,12 +141,35 @@ export const useStore = create<DAWState>((set, get) => ({
         authService.subscribeToState<AudioPreset[]>({ collection: 'presets' }, (presets) => {
           set({ userPresets: presets });
         });
+
+        // Subscribe to Orbit Context (Brain sync)
+        authService.subscribeToState<{ items: OrbitItem[], activeSpace: string }>({ collection: 'orbits' }, (data) => {
+          if (data) {
+            const prevSpace = get().activeSpace;
+            const newSpace = data.activeSpace || 'home';
+
+            set({
+              orbitItems: data.items || [],
+              activeSpace: newSpace
+            });
+
+            if (prevSpace !== newSpace) {
+              console.log(`[AI-DAW] Space Shift: ${prevSpace} -> ${newSpace}`);
+              // We could trigger a toast or auto-fill AIPanel here if we pass a callback
+            }
+          }
+        });
       } else {
-        set({ user: null, userPresets: [] });
+        set({ user: null, userPresets: [], orbitItems: [], activeSpace: 'home' });
       }
     });
 
     set({ isSyncing: false });
+  },
+
+  getSuggestedPrompt: () => {
+    const space = get().activeSpace;
+    return SPACE_SONIC_MAP[space] || SPACE_SONIC_MAP['unknown'];
   },
 
   savePreset: async (presetData) => {

@@ -73,7 +73,8 @@ export default function App() {
     distortionAmount, setDistortionAmount,
     isMuted, setIsMuted,
     isPlaying, noiseEnabled, toneEnabled,
-    initializeAuth
+    initializeAuth,
+    activeSpace, getSuggestedPresetId
   } = useStore();
 
   useEffect(() => {
@@ -259,7 +260,14 @@ export default function App() {
           </div>
           <div>
             <h1 className="font-display text-xl font-bold tracking-tight leading-none">ORBITAUDIO</h1>
-            <p className="text-[10px] text-text-tertiary uppercase tracking-[0.3em] font-bold mt-1">Focus & Flow Engine</p>
+            <div className="flex items-center gap-2 mt-1">
+              <p className="text-[10px] text-text-tertiary uppercase tracking-[0.3em] font-bold">Focus & Flow Engine</p>
+              <div className="h-2 w-px bg-white/10" />
+              <div className="flex items-center gap-1.5 px-2 py-0.5 bg-aurora-500/10 border border-aurora-500/20 rounded-full">
+                <div className="w-1 h-1 rounded-full bg-aurora-500 animate-pulse" />
+                <span className="text-[9px] font-black text-aurora-500 uppercase tracking-tighter">{activeSpace}</span>
+              </div>
+            </div>
           </div>
         </motion.div>
 
@@ -526,6 +534,16 @@ export default function App() {
                     className={`absolute bottom-6 right-6 px-10 py-4 rounded-2xl font-bold text-sm flex items-center gap-3 transition-all ${isAiGenerating ? 'bg-space-700 text-text-tertiary' : 'bg-nebula-500 text-white shadow-xl shadow-nebula-500/20 hover:scale-105 active:scale-95'}`}
                   >
                     {isAiGenerating ? <><Zap className="animate-spin" size={18} /> Synthesizing...</> : <><Sparkles size={18} /> Generate Mix</>}
+                  </button>
+                  <button
+                    onClick={() => {
+                      const id = getSuggestedPresetId();
+                      const preset = BUILT_IN_PRESETS.find(p => p.id === id);
+                      if (preset) applyPreset(preset);
+                    }}
+                    className="absolute top-6 right-8 text-[10px] font-black uppercase text-aurora-400 hover:text-aurora-300 tracking-widest flex items-center gap-2 transition-all"
+                  >
+                    <Zap size={12} fill="currentColor" /> Switch to {activeSpace} preset
                   </button>
                 </div>
               </section>

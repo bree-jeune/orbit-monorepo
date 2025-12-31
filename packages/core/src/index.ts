@@ -1,30 +1,10 @@
 
-export type NoiseType = 'white' | 'pink' | 'brown';
+import { NoiseType, ModeBlueprint } from './types';
 
-export interface ModeBlueprint {
-    id: string;
-    name: string;
-    description: string;
-    intent: string;
-    constraints: {
-        maxDuration?: number;
-        forbiddenElements?: string[];
-        requiredElements?: string[];
-    };
-    audioParams: {
-        noiseType: NoiseType;
-        noiseVolume: number;
-        toneFrequency: number;
-        toneVolume: number;
-        is8D?: boolean;
-        isLofi?: boolean;
-    };
-    metadata: {
-        author: string;
-        version: string;
-        tags: string[];
-    };
-}
+export * from './types';
+export * from './config';
+export * from './factory';
+export * from './logic';
 
 export class AudioEngine {
     private ctx: AudioContext | null = null;

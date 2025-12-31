@@ -5,10 +5,14 @@ import { useStore } from '../store';
 import { GoogleGenAI } from '@google/genai';
 
 const AIPanel: React.FC = () => {
-  const { addToAIQueue, aiQueue, updateAIStatus, addClip, project } = useStore();
+  const { addToAIQueue, aiQueue, updateAIStatus, addClip, project, getSuggestedPrompt, activeSpace } = useStore();
   const [prompt, setPrompt] = useState('');
   const [isEnhancing, setIsEnhancing] = useState(false);
   const [isGenerating, setIsGenerating] = useState(false);
+
+  const useSuggested = () => {
+    setPrompt(getSuggestedPrompt());
+  };
 
   const handleEnhance = async () => {
     if (!prompt) return;
@@ -64,9 +68,18 @@ const AIPanel: React.FC = () => {
   return (
     <div className="flex flex-col gap-6 bg-white dark:bg-space-950 transition-colors duration-300">
       <div className="space-y-4">
-        <label className="text-[10px] font-bold uppercase text-space-500 tracking-widest flex items-center gap-2">
-          <Music size={12} className="text-aurora-600 dark:text-aurora-500" /> AI Audio Prompt
-        </label>
+        <div className="flex items-center justify-between gap-2">
+          <label className="text-[10px] font-bold uppercase text-space-500 tracking-widest flex items-center gap-2">
+            <Music size={12} className="text-aurora-600 dark:text-aurora-500" /> AI Audio Prompt
+          </label>
+          <button
+            onClick={useSuggested}
+            className="text-[9px] font-black uppercase text-aurora-500 hover:text-aurora-400 tracking-tighter transition-all flex items-center gap-1"
+            title={`Suggested for ${activeSpace}`}
+          >
+            <Zap size={10} fill="currentColor" /> Use Auto-Prompt
+          </button>
+        </div>
         <div className="relative group">
           <textarea
             value={prompt}
